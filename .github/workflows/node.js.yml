@@ -41,7 +41,7 @@ jobs:
         path: packages/s3client-win32-arm64.zip
     - uses: actions/upload-artifact@v2
       with:
-        name: s3client-win32-exe
+        name: s3client-win32-x64
         path: packages/s3client-win32-x64.exe
   
   build-linux:
