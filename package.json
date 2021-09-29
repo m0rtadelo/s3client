@@ -7,6 +7,8 @@
     "start": "cd client && npm run build && cd .. && electron .",
     "instal": "npm i && cd client && npm i && cd ..",
     "build": "node build.js",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --fix --ext .js",
     "make": "npm run instal && cd client && npm run build && cd .. && npm run build"
   },
   "repository": "https://github.com/m0rtadelo/s3client",

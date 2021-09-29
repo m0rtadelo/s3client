@@ -65,12 +65,12 @@ export class MainView extends View {
     };
     map[data]?.();
   }
-  
+
   private loadContent() {
     this.controller.loadLocal();
     this.controller.loadRemote();
   }
-  
+
   private checkResponse(response) {
     if (response?.error) {
       this.notifyError(response.error);

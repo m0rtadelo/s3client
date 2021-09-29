@@ -10,7 +10,7 @@ module.exports = {
   'parserOptions': {
     'ecmaVersion': 12,
   },
-  'ignorePatterns': ['client/', 'node_modules/'],
+  'ignorePatterns': ['node_modules/'],
   'rules': {
     'valid-jsdoc': 1,
     'no-invalid-this': 1,

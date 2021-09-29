@@ -132,7 +132,7 @@ export class FileExplorerComponent extends Component {
       }
       return newPath;
     } else {
-      if (parts[parts.length -1 ] === '') {
+      if (parts[parts.length -1] === '') {
         parts = parts.slice(0, parts.length - 1);
       }
       return parts.slice(0, parts.length -1 ).join(this.path).concat(this.path);
