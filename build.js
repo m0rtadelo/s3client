@@ -95,11 +95,11 @@ async function build () {
         src: 'packages/s3client-win32-x64/',
         dest: 'packages/',
         options: {
-          version: 'build',
+          version: '1.0.0',
         }
       })
       // console.log('packages/s3client-win32-x64-v' + version + '.exe' + ' file created!')
-      console.log('packages/s3client-build-setup.exe' + ' file created!')
+      console.log('packages/s3client-1.0.0-setup.exe' + ' file created!')
     } catch (e) {
       console.log(`No dice: ${e.message}`)
     }

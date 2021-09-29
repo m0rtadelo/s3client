@@ -19,6 +19,10 @@ module.exports = {
             to: '.',
           },
           {
+            from: 'assets/*.icns',
+            to: '.',
+          },
+          {
             from: '*.ico',
             // to: path.resolve(__dirname, 'dist'),
             to: './assets',
