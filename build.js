@@ -5,7 +5,7 @@ const { version } = require('./package.json')
 const fs = require('fs-extra')
 const rra = require('recursive-readdir-async');
 
-const doRebuild = false
+const doRebuild = true
 
 var options = {
   all: false,
@@ -31,6 +31,7 @@ var options = {
   afterCopy: [(buildPath, electronVersion, platform, arch, cb) => {
     if (platform === process.platform && doRebuild) {
       console.log('rebuild ' + buildPath + ' (' + arch + ')')
+      fs.copySync('./node_modules/aws-sdk/clients/codebuild.js', buildPath + '/node_modules/aws-sdk/clients/codebuild.js');
       rebuild({ path: buildPath, buildPath, electronVersion, arch })
         .then(() => cb())
         .catch(err => { console.error(`Oooops ${platform}.${arch} rebuild ERROR!`); cb() })
@@ -58,7 +59,7 @@ async function build () {
         }
       })
     }
-    fs.copySync('./node_modules/aws-sdk/clients/codebuild.js', './' + p + '/resources/app/node_modules/aws-sdk/clients/codebuild.js');
+    // fs.copySync('./node_modules/aws-sdk/clients/codebuild.js', './' + p + '/resources/app/node_modules/aws-sdk/clients/codebuild.js');
     const name = p.split(' /').pop()
     // await zip('./' + p, './' + name + '-v' + version + '.zip')
     await zip('./' + p, './' + name + '.zip')
