@@ -51,11 +51,13 @@ async function build () {
     fs.removeSync('./' + p + '/resources/app/client/node_modules', { resursive: true } );
     fs.removeSync('./' + p + '/resources/app/client/src', { resursive: true } );
     const files = await rra.list('./' + p + '/resources/app/client/', { recursive: false, stats: true });
-    files.forEach((file) => {
-      if (!file.isDirectory) {
-        fs.unlinkSync(file.fullname);
-      }
-    })
+    if (files && files.length) {
+      files.forEach((file) => {
+        if (!file.isDirectory) {
+          fs.unlinkSync(file.fullname);
+        }
+      })
+    }
     fs.copySync('./node_modules/aws-sdk/clients/codebuild.js', './' + p + '/resources/app/node_modules/aws-sdk/clients/codebuild.js');
     const name = p.split(' /').pop()
     // await zip('./' + p, './' + name + '-v' + version + '.zip')
