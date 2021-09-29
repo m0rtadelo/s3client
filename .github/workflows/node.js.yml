@@ -48,22 +48,26 @@ jobs:
     # - run: npm test
     - run: npm run make --if-present
     - uses: actions/upload-artifact@v2
+      name: Upload artifact (win32-x64)
       with:
         name: s3client-win32-x64
         path: packages/s3client-win32-x64.zip
     - uses: actions/upload-artifact@v2
+      name: Upload artifact (win32-ia32)
       with:
         name: s3client-win32-ia32
         path: packages/s3client-win32-ia32.zip
     - uses: actions/upload-artifact@v2
+      name: Upload artifact (win32-arm64)
       with:
         name: s3client-win32-arm64
         path: packages/s3client-win32-arm64.zip
     - uses: actions/upload-artifact@v2
+      name: Upload artifact (win32-installer)
       with:
         name: s3client-win32-installer
         path: packages/s3client-${{steps.extract_version.outputs.version}}-setup.exe
-    - name: upload linux artifacts
+    - name: Upload asset (win32-x64) to Release ${{ steps.extract_version.outputs.version }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
@@ -136,3 +140,21 @@ jobs:
       with:
         name: s3client-darwin-arm64
         path: packages/s3client-darwin-arm64.zip        
+    - name: Upload asset (darwin-x64) to Release ${{ steps.extract_version.outputs.version }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: packages/s3client-darwin-x64.zip
+        asset_name: s3client-darwin-x64
+        asset_content_type: application/zip
+    - name: Upload asset (darwin-arm64) to Release ${{ steps.extract_version.outputs.version }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: packages/s3client-darwin-arm64.zip
+        asset_name: s3client-darwin-arm64
+        asset_content_type: application/zip
