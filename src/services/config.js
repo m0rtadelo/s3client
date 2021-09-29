@@ -2,7 +2,7 @@ const Files = require('../utils/files');
 
 const Config = {
   data: { buckets: [
-    { bucket: '', accessKeyId: '', secretAccessKey: '', region: 'eu-west-1', localPath: '/', remotePath: '/' }
+    { bucket: '', accessKeyId: '', secretAccessKey: '', region: 'eu-west-1', localPath: '/', remotePath: '/' },
   ] },
   loadDataFromFile: () => {
     const stream = Files.read(Config.configFile());
@@ -14,8 +14,8 @@ const Config = {
     Files.write(Config.configFile(), JSON.stringify(Config.data));
   },
   configFile: () => {
-    return Files.getAppFolder().concat('config.json')
-  }
-}
+    return Files.getAppFolder().concat('config.json');
+  },
+};
 
-module.exports = Config
+module.exports = Config;
