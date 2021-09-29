@@ -1,6 +1,6 @@
 import { FileExplorerComponent, MainMenuComponent } from '../../components';
 import { TasksComponent } from '../../components/tasks/tasks.component';
-import { View } from '../../core';
+import { get, View } from '../../core';
 import { IBucket } from '../../interfaces/config.interface';
 import { Model } from '../../model';
 import { MainController } from './main.controller';
@@ -66,6 +66,10 @@ export class MainView extends View {
     map[data]?.();
   }
 
+  public unselectAll() {
+    (this.getComponentById('local') as FileExplorerComponent).unselectAll('local');
+    (this.getComponentById('remote') as FileExplorerComponent).unselectAll('remote');
+  }
   private loadContent() {
     this.controller.loadLocal();
     this.controller.loadRemote();

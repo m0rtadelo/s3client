@@ -30,8 +30,7 @@ export class MainController {
     (window as any).api.sendMessage(
         { action: 'copyItems', bucket: this.view.bucket, data: this.view.model.selectedFiles },
     );
-    this.loadLocal();
-    this.loadRemote();
+    (this.view as MainView).unselectAll();
   }
 
   public async deleteItems() {
@@ -39,8 +38,7 @@ export class MainController {
       (window as any).api.sendMessage(
           { action: 'deleteItems', bucket: this.view.bucket, data: this.view.model.selectedFiles },
       );
-      this.loadLocal();
-      this.loadRemote();
+      (this.view as MainView).unselectAll();
     }
   }
 
