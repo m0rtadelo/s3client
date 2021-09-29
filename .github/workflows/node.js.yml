@@ -42,7 +42,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: s3client-win32-installer
-        path: packages/s3client-build-setup.exe
+        path: packages/s3client-1.0.0-setup.exe
   
   build-linux:
 
@@ -96,6 +96,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm i -g npm
     - run: npm ci
     - run: npm test
     - run: npm run make --if-present
