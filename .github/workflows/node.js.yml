@@ -19,6 +19,8 @@ jobs:
         node-version: [ 12.x ]
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@main
     - name: Extract version
       id: extract_version
       uses: Saionaro/extract-package-version@v1.0.6
