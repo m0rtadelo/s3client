@@ -19,6 +19,9 @@ jobs:
         node-version: [ 12.x ]
 
     steps:
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@master
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -42,7 +45,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: s3client-win32-installer
-        path: packages/s3client-1.0.0-setup.exe
+        path: packages/s3client-${{ steps.package-version.outputs.current-version}}-setup.exe
   
   build-linux:
 
