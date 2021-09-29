@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const { ipcMain } = require('electron')
+const VERSION = require('./package.json').version;
 const Files = require('./src/utils/files')
 const Config = require('./src/services/config')
 const fs = require('fs-extra');
@@ -60,7 +61,7 @@ app.whenReady().then(() => {
   })
   ipcMain.handle('init', async (event, data) => {
     Config.loadDataFromFile();
-    return Config.data;
+    return { ...Config.data, version: VERSION };
   })
 
   ipcMain.handle('saveConfig', async (event, data) => {

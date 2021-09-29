@@ -14,6 +14,7 @@ export class InitView extends View {
     this.loading = true;
     const config = await this.controller.init();
     this.model.setConfig(config);
+    get('title').innerText += ` (v.${this.model.getConfig().version })`;
     this.loading = false;
     if (this.model.hasBucket()) {
       this.emmit(this.model.buckets[0]);

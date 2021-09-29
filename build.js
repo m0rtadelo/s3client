@@ -95,12 +95,8 @@ async function build () {
       await installer({
         src: 'packages/s3client-win32-x64/',
         dest: 'packages/',
-        options: {
-          version: '1.0.0',
-        }
       })
-      // console.log('packages/s3client-win32-x64-v' + version + '.exe' + ' file created!')
-      console.log('packages/s3client-1.0.0-setup.exe' + ' file created!')
+      console.log('packages/s3client-' + version + '-setup.exe' + ' file created!')
     } catch (e) {
       console.log(`No dice: ${e.message}`)
     }
