@@ -1,6 +1,6 @@
 {
   "name": "s3client",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "An AWS-s3 graphical client compatible with all OS and platforms (Mac & PC)",
   "main": "main.js",
   "scripts": {
