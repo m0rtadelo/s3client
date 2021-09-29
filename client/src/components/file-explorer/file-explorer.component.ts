@@ -5,9 +5,11 @@ import { MainView } from '../../views/main/main.view';
 export class FileExplorerComponent extends Component {
   public selector = 'file-explorer';
   public loading = false;
+  private path: string;
 
   public render(view: View, parent: any) {
     super.render(view, parent);
+    this.path = view.model.getConfig().path;
     super.return(this.listItems());
   }
 
@@ -75,7 +77,7 @@ export class FileExplorerComponent extends Component {
     <div style="width: 50%; position: absolute; overflow-y: auto; top: 6em; bottom: 8em; border-left: 1px solid #ccc;">
     <table class="table table-sm table-striped table-hover">
     <tbody style="font-size: small;">`;
-    if (path?.length > 1) {
+    if ((this.path === '/' && path?.length > 1) || (this.path === '\\' && path?.length > 3)) {
       result += `<tr><td><input class="form-check-input" type="checkbox" value="" disabled><a href="#" click="${type === 'local' ? `this.openLocalFolder('..')` : `this.openRemoteFolder('..')`}"> <i class="bi bi-folder"></i> ..</a></td><td>&nbsp;</td></tr>`;
     }
     [true, false].forEach((isDir) => {
@@ -121,19 +123,27 @@ export class FileExplorerComponent extends Component {
   }
 
   private removeLastPath(path) {
-    const parts = path.split('/');
-    let newPath = '/';
-    for (let i=1; i < parts.length -2; i++) {
-      newPath += parts[i] + '/';
+    let parts = path.split(this.path);
+    if (this.path === '/' || path.startsWith('/')) {
+      parts = path.split('/');
+      let newPath = '/';
+      for (let i=1; i < parts.length - 2; i++) {
+        newPath += parts[i] + '/';
+      }
+      return newPath;
+    } else {
+      if (parts[parts.length -1 ] === '') {
+        parts = parts.slice(0, parts.length - 1);
+      }
+      return parts.slice(0, parts.length -1 ).join(this.path).concat(this.path);
     }
-    return newPath;
   }
 
   private openLocalFolder(folder: string) {
     if (folder === '..') {
       (this.view as MainView).bucket.localPath = this.removeLastPath((this.view as MainView).bucket.localPath);
     } else {
-      (this.view as MainView).bucket.localPath = (this.view as MainView).bucket.localPath.concat(folder).concat('/');
+      (this.view as MainView).bucket.localPath = (this.view as MainView).bucket.localPath.concat(folder).concat(this.path);
     }
     this.view.emmit('reloadLocal');
   }

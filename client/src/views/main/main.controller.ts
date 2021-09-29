@@ -48,6 +48,6 @@ export class MainController {
     this.view.model.addTask(item);
   }
   private fixPath(path: string): string {
-    return path?.endsWith('/') ? path : path?.concat('/');
+    return path?.startsWith('/') ? path?.endsWith('/') ? path : path?.concat('/') : path;
   }
 }

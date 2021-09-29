@@ -61,7 +61,7 @@ app.whenReady().then(() => {
   })
   ipcMain.handle('init', async (event, data) => {
     Config.loadDataFromFile();
-    return { ...Config.data, version: VERSION };
+    return { ...Config.data, version: VERSION, path: Files.sep() };
   })
 
   ipcMain.handle('saveConfig', async (event, data) => {

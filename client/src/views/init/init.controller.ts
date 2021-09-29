@@ -1,7 +1,7 @@
 import { IBucket, IConfig } from '../../interfaces/config.interface';
 
 export class InitController {
-  public async init() {
+  public async init(): Promise<IConfig> {
     return await (window as any).api.init();
   }
 

@@ -1,6 +1,7 @@
 export interface IConfig {
   buckets: Array<IBucket>,
   version: string,
+  path: string,
 }
 
 export interface IBucket {

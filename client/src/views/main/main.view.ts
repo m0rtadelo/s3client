@@ -65,13 +65,16 @@ export class MainView extends View {
     };
     map[data]?.();
   }
-
+  
   private loadContent() {
     this.controller.loadLocal();
     this.controller.loadRemote();
   }
-
+  
   private checkResponse(response) {
+    if (response?.error) {
+      this.notifyError(response.error);
+    }
     if (response?.action === 'copyItems') {
       this.controller.updateItem(response);
     }
@@ -92,7 +95,7 @@ export class MainView extends View {
           this.notifyError(response.data.error);
         } else {
           this.model.localFiles = response.data.map((e) => (
-            { Key: e.name, Size: e.stats.size, LastModified: e.stats.mtime, isDirectory: e.isDirectory }
+            { Key: e.name, Size: e.stats?.size, LastModified: e.stats?.mtime, isDirectory: e.isDirectory }
           ));
           this.model.localFiles = this.model.localFiles.sort((one, two) => (one.Key < two.Key ? -1 : 1));
         }

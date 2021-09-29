@@ -13,6 +13,9 @@ export class InitView extends View {
   public async onReady() {
     this.loading = true;
     const config = await this.controller.init();
+    if (config.path === '\\') {
+      config.buckets[0].localPath = 'C:\\';
+    }
     this.model.setConfig(config);
     get('title').innerText += ` (v.${this.model.getConfig().version })`;
     this.loading = false;
@@ -24,7 +27,6 @@ export class InitView extends View {
     }, INTERVAL);
     (window as any).api.message(async (response) => {
       if (response.action === 'check') {
-        console.log(response);
         if (response.end === true) {
           await this.controller.saveConfig(this.model.getConfig());
           new MainView(this.model);
