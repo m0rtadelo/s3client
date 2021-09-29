@@ -9,4 +9,4 @@ This project is a simple s3 client to work with Amazon s3 Buckets. This app's al
 
 ## Installation
 
-Binaries can be downloaded from GitHub
+Binaries can be downloaded from GitHub at https://github.com/m0rtadelo/s3client/releases/
