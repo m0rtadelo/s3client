@@ -19,9 +19,11 @@ jobs:
         node-version: [ 12.x ]
 
     steps:
-    - name: get-npm-version
-      id: package-version
-      uses: martinbeentjes/npm-get-version-action@master
+    - name: Extract version
+      id: extract_version
+      uses: Saionaro/extract-package-version@v1.0.6
+    - name: Print version
+      run: echo ${{ steps.extract_version.outputs.version }}
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -45,7 +47,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: s3client-win32-installer
-        path: packages/s3client-${{ steps.package-version.outputs.current-version}}-setup.exe
+        path: packages/s3client-${{steps.extract_version.outputs.version}}-setup.exe
   
   build-linux:
 
