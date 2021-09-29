@@ -88,11 +88,11 @@ export class FileExplorerComponent extends Component {
     return result.concat(`</tbody>
     </table></div>
     <div style="position: absolute; bottom: 6em; height: 2em; width: 50%; border-left: 1px solid #ccc;" class="text-center">
-    <a href="#" click="this.unselectAll('${type}')">unselect all</a>
+    <a href="#" click="this.unselectAll('${type}')"><i class="bi bi-list-task" title="Unselect all items"></i></a>
     <small>
-    ${this.view.model.countFiles(type)} Items
+    <span class="badge bg-secondary"> ${this.view.model.countFiles(type)} Items </span>
     </small>
-    <a href="#" click="this.selectAll('${type}')">select all</a>
+    <a href="#" click="this.selectAll('${type}')"><i class="bi bi-list-check" title="Select all items"></i></a>
     </div>
   `);
   }
