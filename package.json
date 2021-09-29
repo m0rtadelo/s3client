@@ -1,0 +1,42 @@
+{
+  "name": "s3client",
+  "version": "1.0.0",
+  "description": "An AWS-s3 graphical client compatible with all OS and platforms (Mac & PC)",
+  "main": "main.js",
+  "scripts": {
+    "electron-app": "electron .",
+    "instal": "npm i && cd client && npm i && cd ..",
+    "build": "node build.js",
+    "make": "npm run instal && cd client && npm run build && cd .. && npm run build"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "desktop",
+    "amazon",
+    "aws",
+    "s3",
+    "file",
+    "folder",
+    "client",
+    "bucket"
+  ],
+  "author": "ricard.figuls@gmail.com",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^12.0.4",
+    "electron-packager": "^15.4.0",
+    "electron-rebuild": "^3.2.3",
+    "fs-extra": "^10.0.0",
+    "zip-a-folder": "^1.1.0"
+  },
+  "dependencies": {
+    "recursive-readdir-async": "^1.1.8",
+    "@auth0/s3": "^1.0.0",
+    "dotenv": "^10.0.0"
+  },
+  "optionalDependencies": {
+    "electron-installer-debian": "^3.1.0",
+    "electron-installer-windows": "^3.0.0"
+  }
+}

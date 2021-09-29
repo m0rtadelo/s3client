@@ -1,0 +1,101 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-windows:
+
+    runs-on: [ windows-latest ]
+
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm test
+    - run: npm run make --if-present
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-win32-x64
+        path: packages/s3client-win32-x64.zip
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-win32-ia32
+        path: packages/s3client-win32-ia32.zip
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-win32-arm64
+        path: packages/s3client-win32-arm64.zip
+  
+  build-linux:
+
+    runs-on: [ ubuntu-latest ]
+
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm test
+    - run: npm run make --if-present
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-linux-x64
+        path: packages/s3client-linux-x64.zip
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-linux-armv7l
+        path: packages/s3client-linux-armv7l.zip        
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-linux-ia32
+        path: packages/s3client-linux-ia32.zip        
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-linux-arm64
+        path: packages/s3client-linux-arm64.zip
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-linux-installer
+        path: packages/s3client-linux-x64.deb
+
+  build-darwin:
+
+    runs-on: [ macos-latest ]
+
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm test
+    - run: npm run make --if-present
+    - uses: actions/upload-artifact@v2
+      with:
+        name: s3client-darwin-x64
+        path: packages/s3client-darwin-x64.zip

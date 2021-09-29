@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "target": "es5",
+    "moduleResolution": "node",
+    "module": "esnext",
+    "strict": false,
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+        "dom",
+        "es5",
+        "es2015.promise"
+    ]
+  }
+}
