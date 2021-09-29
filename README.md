@@ -4,8 +4,8 @@
 
 This project is a simple s3 client to work with Amazon s3 Buckets. This app's allows you to upload, download and delete s3 content.
 
-![Screenshoot1](screen1.png)
-![Screenshoot2](screen2.png)
+![Screenshoot1](src/assets/screen1.png)
+![Screenshoot2](src/assets/screen2.png)
 
 ## Installation
 

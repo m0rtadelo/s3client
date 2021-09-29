@@ -4,7 +4,7 @@
   "description": "An AWS-s3 graphical client compatible with all OS and platforms (Mac & PC)",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "cd client && npm run build && cd .. && electron .",
     "instal": "npm i && cd client && npm i && cd ..",
     "build": "node build.js",
     "make": "npm run instal && cd client && npm run build && cd .. && npm run build"
