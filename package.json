@@ -27,10 +27,10 @@
     "electron": "^12.0.4",
     "electron-packager": "^15.4.0",
     "electron-rebuild": "^3.2.3",
-    "fs-extra": "^10.0.0",
     "zip-a-folder": "^1.1.0"
   },
   "dependencies": {
+    "fs-extra": "^10.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "recursive-readdir-async": "^1.1.8",
     "@auth0/s3": "^1.0.0",

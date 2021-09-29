@@ -3,7 +3,9 @@ const path = require('path')
 const { ipcMain } = require('electron')
 const Files = require('./src/utils/files')
 const Config = require('./src/services/config')
+const fs = require('fs-extra');
 const s3 = require('@auth0/s3');
+
 const createClient = (data) => (s3.createClient({
   maxAsyncS3: 20,     // this is the default
   s3RetryCount: 3,    // this is the default
@@ -99,8 +101,8 @@ app.whenReady().then(() => {
           Files.remove(data.bucket.localPath.concat(item.Key));
           event.reply('message', { item, action: data.action, end: true, process: 'local' })
         } else {
-          // const upd = client.uploadDir({ localDir: data.bucket.localPath.concat(item.Key), s3Params: { Bucket: data.bucket.bucket, Prefix: data.bucket.remotePath.concat(item.Key) }});
-          // envelope(upd, event, item, data.action, 'upload');
+          fs.removeSync(data.bucket.localPath.concat(item.Key), { recursive: true });
+          event.reply('message', { item, action: data.action, end: true, process: 'local' })
         }
       })
       data.data.remote.forEach((item) => {
