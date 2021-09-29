@@ -8,9 +8,9 @@ const fs = require('fs-extra');
 const s3 = require('@auth0/s3');
 
 const createClient = (params) => (s3.createClient({
-  maxAsyncS3: 20,     // this is the default
-  s3RetryCount: 3,    // this is the default
-  s3RetryDelay: 1000, // this is the default
+  maxAsyncS3: Config.data?.s3client?.maxAsyncS3 || 20,     // this is the default
+  s3RetryCount: Config.data?.s3client?.s3RetryCount || 3,    // this is the default
+  s3RetryDelay: Config.data?.s3client?.s3RetryDelay || 1000, // this is the default
   multipartUploadThreshold: 20971520, // this is the default (20 MB)
   multipartUploadSize: 15728640, // this is the default (15 MB)
   s3Options: {
@@ -54,7 +54,7 @@ function handleInit() {
   return { ...Config.data, version: VERSION, path: Files.sep() };
 }
 
-function handleConfig(data) {
+function handleSaveConfigToDisk(data) {
   Config.data = data
   Config.saveDataToFile();
   return true;
@@ -73,7 +73,7 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('init', async (event, data) => handleInit())
-  ipcMain.handle('saveConfig', async (event, data) => handleConfig(data))
+  ipcMain.handle('saveConfig', async (event, data) => handleSaveConfigToDisk(data))
 
   ipcMain.on('message', async (event, data) => {
     const envelope = (upd, event, item, action, process) => {
@@ -88,6 +88,9 @@ app.whenReady().then(() => {
       })
     }
     if (event) {
+      const localPath = (key) => data?.bucket?.localPath?.concat(key);
+      const remotePath = (key) => data?.bucket?.remotePath?.concat(key);
+      const bucket = data?.bucket?.bucket;
       const map = {
         'buckets': () => {
           client.s3.listBuckets(function(err, data) {
@@ -111,17 +114,16 @@ app.whenReady().then(() => {
           const client = createClient(data.bucket);
           data.data.local.forEach((item) => {
             if (!item.isDirectory) {
-              Files.remove(data.bucket.localPath.concat(item.Key));
+              Files.remove(localPath(item.Key));
               event.reply('message', { item, action: data.action, end: true, process: 'local' })
             } else {
-              fs.removeSync(data.bucket.localPath.concat(item.Key), { recursive: true });
+              fs.removeSync(localPath(item.Key), { recursive: true });
               event.reply('message', { item, action: data.action, end: true, process: 'local' })
             }
           })
           data.data.remote.forEach((item) => {
-            console.log(item)
             if(!item.isDirectory) {
-              client.s3.deleteObject({ Bucket: data.bucket.bucket, Key: data.bucket.remotePath.concat(item.Key) }, function(err, data) {
+              client.s3.deleteObject({ Bucket: bucket, Key: remotePath(item.Key) }, function(err, data) {
                 if(err) {
                   event.reply('message', { item, action: 'deleteItems', error: err, process: 'remote' })
                 } else {
@@ -130,8 +132,8 @@ app.whenReady().then(() => {
               });
             } else {
               const upd = client.deleteDir({
-                Bucket: data.bucket.bucket,
-                Prefix: data.bucket.remotePath.concat(item.Key),
+                Bucket: bucket,
+                Prefix: remotePath(item.Key),
               })
               envelope(upd, event, item, data.action, 'remote');
             }
@@ -141,19 +143,19 @@ app.whenReady().then(() => {
           const client = createClient(data.bucket);
           data.data.local.forEach((item) => {
             if (!item.isDirectory) {
-              const upd = client.uploadFile({ localFile: data.bucket.localPath.concat(item.Key), s3Params: { Bucket: data.bucket.bucket, Key: data.bucket.remotePath.concat(item.Key) }})
+              const upd = client.uploadFile({ localFile: localPath(item.Key), s3Params: { Bucket: bucket, Key: remotePath(item.Key) }})
               envelope(upd, event, item, data.action, 'upload');
             } else {
-              const upd = client.uploadDir({ localDir: data.bucket.localPath.concat(item.Key), s3Params: { Bucket: data.bucket.bucket, Prefix: data.bucket.remotePath.concat(item.Key) }});
+              const upd = client.uploadDir({ localDir: localPath(item.Key), s3Params: { Bucket: bucket, Prefix: remotePath(item.Key) }});
               envelope(upd, event, item, data.action, 'upload');
             }
           })
           data.data.remote.forEach((item) => {
             if(!item.isDirectory) {
-              const dwn = client.downloadFile({ localFile: data.bucket.localPath.concat(item.Key), s3Params: { Bucket: data.bucket.bucket, Key: data.bucket.remotePath.concat(item.Key) }})
+              const dwn = client.downloadFile({ localFile: localPath(item.Key), s3Params: { Bucket: bucket, Key: remotePath(item.Key) }})
               envelope(dwn, event, item, data.action, 'download');
             } else {
-              const upd = client.downloadDir({ localDir: data.bucket.localPath.concat(item.Key), s3Params: { Bucket: data.bucket.bucket, Prefix: data.bucket.remotePath.concat(item.Key) }});
+              const upd = client.downloadDir({ localDir: localPath(item.Key), s3Params: { Bucket: bucket, Prefix: remotePath(item.Key) }});
               envelope(upd, event, item, data.action, 'download');
             }
           })
@@ -171,7 +173,7 @@ app.whenReady().then(() => {
         'loadRemote': () => {
           {
             const client = createClient(data.bucket)
-            const list = client.listObjects( { s3Params: { Bucket: data.bucket.bucket }})
+            const list = client.listObjects( { s3Params: { Bucket: bucket }})
             list.on('data', (data) => {
               event.reply('message', { action: 'loadRemote', data })
             })
