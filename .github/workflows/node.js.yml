@@ -36,7 +36,7 @@ jobs:
         prerelease: false
         release_name: ${{ steps.extract_version.outputs.version }}
         tag_name: ${{ github.ref }}
-        body_path: 'Release ${{steps.extract_version.outputs.version}}'
+        body: 'Release ${{steps.extract_version.outputs.version}}'
       env:
         GITHUB_TOKEN: ${{ github.token }}
     - uses: actions/checkout@v2
