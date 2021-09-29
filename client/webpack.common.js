@@ -20,7 +20,8 @@ module.exports = {
           },
           {
             from: '*.ico',
-            to: path.resolve(__dirname, 'dist'),
+            // to: path.resolve(__dirname, 'dist'),
+            to: './assets',
             toType: 'dir',
           },
         ],

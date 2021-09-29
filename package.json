@@ -31,6 +31,7 @@
     "zip-a-folder": "^1.1.0"
   },
   "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
     "recursive-readdir-async": "^1.1.8",
     "@auth0/s3": "^1.0.0",
     "dotenv": "^10.0.0"

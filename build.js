@@ -14,9 +14,9 @@ var options = {
   dir: './',
   'app-copyright': 'Ricard Fíguls',
   'app-version': version,
-  icon: './client/assets/icon.png',
+  icon: './client/dist/assets/icon.png',
   name: 's3client',
-  ignore: ['node_modules/electron-installer-debian', '.packages/', './.git', '/.nyc_output', '/coverage', '.auth.json', '.build.js', '/tests', '.myteam', '.pdf', '.docx'],
+  ignore: ['client/assets', 'client/node_modules', 'client/src', 'node_modules/electron-installer-debian', '.packages/', './.git', '/.nyc_output', '/coverage', '.auth.json', '.build.js', '/tests', '.myteam', '.pdf', '.docx'],
   out: './packages',
   overwrite: true,
   prune: true,
@@ -73,7 +73,7 @@ async function build () {
         dest: 'packages/',
         arch: 'amd64',
         options: {
-          icon: 'client/assets/icon.png',
+          icon: 'client/dist/assets/icon.png',
         }
       }).then(result => {
         const orDeb = result.packagePaths
@@ -93,10 +93,13 @@ async function build () {
     try {
       await installer({
         src: 'packages/s3client-win32-x64/',
-        dest: 'packages/'
+        dest: 'packages/',
+        options: {
+          version: 'build',
+        }
       })
       // console.log('packages/s3client-win32-x64-v' + version + '.exe' + ' file created!')
-      console.log('packages/s3client-win32-x64.exe' + ' file created!')
+      console.log('packages/s3client-build-setup.exe' + ' file created!')
     } catch (e) {
       console.log(`No dice: ${e.message}`)
     }

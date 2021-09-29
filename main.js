@@ -20,6 +20,12 @@ const createClient = (data) => (s3.createClient({
     // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property
   },      
 }))
+
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+  app.quit()
+}
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
