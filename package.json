@@ -4,7 +4,7 @@
   "description": "An AWS-s3 graphical client compatible with all OS and platforms (Mac & PC)",
   "main": "main.js",
   "scripts": {
-    "start": "cd client && npm run build && cd .. && electron .",
+    "start": "electron .",
     "instal": "npm i && cd client && npm i && cd ..",
     "build": "node build.js",
     "lint": "eslint . --ext .js",
@@ -26,7 +26,7 @@
   "author": "ricard.figuls@gmail.com",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^12.0.4",
+    "electron": "^12.2.0",
     "electron-packager": "^15.4.0",
     "electron-rebuild": "^3.2.3",
     "eslint": "^7.32.0",
