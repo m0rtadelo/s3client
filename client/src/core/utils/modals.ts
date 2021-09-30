@@ -10,14 +10,18 @@ export class Modals {
     this._view = view;
   }
   public message(msg: string, title?: string): Promise<void> {
-    get(TAG_KEY).innerHTML = this.getHtmlModal(false).replace('$msg', msg).replace('$title', title || i18n.get('message'));
+    get(TAG_KEY).innerHTML = this.getHtmlModal(false)
+        .replace('$msg', msg)
+        .replace('$title', title || i18n.get('message'));
     addListeners(get(TAG_KEY), false, this._view);
     return new Promise(() => {
       get('openModal').click();
     });
   }
   public confirm(msg: string, title?: string): Promise<boolean> {
-    get(TAG_KEY).innerHTML = this.getHtmlModal().replace('$msg', msg).replace('$title', title || i18n.get('confirm'));
+    get(TAG_KEY).innerHTML = this.getHtmlModal()
+        .replace('$msg', msg)
+        .replace('$title', title || i18n.get('confirm'));
     addListeners(get(TAG_KEY), false, this._view);
     return new Promise((res) => {
       get('openModal').click();

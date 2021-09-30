@@ -65,7 +65,9 @@ export class ConfigComponent extends Component {
     </div>
     ` : '' }
 
-    <button type="submit" class="btn btn-primary col-12" ${view.loading ? 'disabled' : ''}>${view.loading ? 'Loading...' : 'Accept'}</button>
+    <button type="submit" class="btn btn-primary col-12" ${view.loading ? 'disabled' : ''}>
+      ${view.loading ? 'Loading...' : 'Accept'}
+    </button>
     </div>
     </div>
     </form>

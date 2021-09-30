@@ -23,11 +23,14 @@ export class TasksComponent extends Component {
       response += `
       <div style="width:100%; background-color: #ebeced; border-radius: 0.4em; margin: 0.1em;" class="row">
       <div class="col" style="font-size: small;">
-      <i class="bi ${map[task.process] || 'bi-trash'}"></i> <i class="bi ${task.item.isDirectory ? 'bi-folder' : 'bi-file-text'}"></i> ${task.item.Key}
+      <i class="bi ${map[task.process] || 'bi-trash'}"></i> 
+      <i class="bi ${task.item.isDirectory ? 'bi-folder' : 'bi-file-text'}"></i> ${task.item.Key}
         </div>
         <div class="col">
         <div class="progress" style="height: 0.6em; margin: 0.5em;">
-        <div class="progress-bar ${+perc === 100 ? 'bg-success' : ''}" role="progressbar" style="width: ${perc}%;" aria-valuenow="${task.progress?.current || 0}" aria-valuemin="0" aria-valuemax="${task.progress?.total || 0}"></div>
+        <div class="progress-bar ${+perc === 100 ? 'bg-success' : ''}" role="progressbar" style="width: ${perc}%;" 
+        aria-valuenow="${task.progress?.current || 0}" aria-valuemin="0" aria-valuemax="${task.progress?.total || 0}">
+        </div>
       </div>          
         </div>
       </div>

@@ -39,7 +39,9 @@ module.exports.envelope = (upd, event, item, action, process) => {
     event.reply('message', { item, action, process, end: true });
   });
   upd.on('progress', () => {
-    event.reply('message', { item, action, process, progress: { current: upd.progressAmount, total: upd.progressTotal } });
+    event.reply('message', { item, action, process, progress:
+      { current: upd.progressAmount, total: upd.progressTotal },
+    });
   });
 };
 

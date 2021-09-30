@@ -62,7 +62,9 @@ describe('View', () => {
   });
 
   it('should add commponents', () => {
-    const v = new MockView('<component id="component"></component><component2></component2>', [new MockComponent(), new MockComponent2()]);
+    const v = new MockView(
+        '<component id="component"></component><component2></component2>', [new MockComponent(), new MockComponent2()],
+    );
     const inner = get('component').innerHTML;
     expect(inner).equals('<div>component</div>');
     v.activeComponents[0].destroy();

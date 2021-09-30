@@ -1,13 +1,13 @@
 import { FileExplorerComponent, MainMenuComponent } from '../../components';
 import { TasksComponent } from '../../components/tasks/tasks.component';
-import { get, View } from '../../core';
+import { View } from '../../core';
 import { IBucket } from '../../interfaces/config.interface';
 import { Model } from '../../model';
 import { MainController } from './main.controller';
 import { HTML } from './main.html';
 
 export class MainView extends View {
-  public controller = new MainController(this);
+  public controller = new MainController(this); // eslint-disable-line no-invalid-this
   public bucket: IBucket;
 
   constructor(data: Model) {
@@ -79,33 +79,32 @@ export class MainView extends View {
     if (response?.error) {
       this.notifyError(response.error);
     }
-    if (response?.action === 'copyItems') {
-      this.controller.updateItem(response);
-    }
-    if (response?.action === 'deleteItems') {
-      this.controller.updateItem(response);
-    }
-    if (response?.action === 'loadRemote') {
-      if (response.data) {
-        this.model.remoteRaw = [...this.model.remoteRaw, ...response.data.Contents];
-      }
-      if (response.end) {
-        this.reloadRemote();
-      }
-    }
-    if (response?.action === 'loadLocal') {
-      if (response.data) {
-        if (response.data.error) {
-          this.notifyError(response.data.error);
-        } else {
-          this.model.localFiles = response.data.map((e) => (
-            { Key: e.name, Size: e.stats?.size, LastModified: e.stats?.mtime, isDirectory: e.isDirectory }
-          ));
-          this.model.localFiles = this.model.localFiles.sort((one, two) => (one.Key < two.Key ? -1 : 1));
+    const map = {
+      'copyItems': () => this.controller.updateItem(response),
+      'deleteItems': () => this.controller.updateItem(response),
+      'loadRemote': () => {
+        if (response.data) {
+          this.model.remoteRaw = [...this.model.remoteRaw, ...response.data.Contents];
         }
-        (this.getComponentById('local') as FileExplorerComponent).unselectAll('local');
-        (this.getComponentById('local') as FileExplorerComponent).loading = false;
-      }
-    }
+        if (response.end) {
+          this.reloadRemote();
+        }
+      },
+      'loadLocal': () => {
+        if (response.data) {
+          if (response.data.error) {
+            this.notifyError(response.data.error);
+          } else {
+            this.model.localFiles = response.data.map((e) => (
+              { Key: e.name, Size: e.stats?.size, LastModified: e.stats?.mtime, isDirectory: e.isDirectory }
+            ));
+            this.model.localFiles = this.model.localFiles.sort((one, two) => (one.Key < two.Key ? -1 : 1));
+          }
+          (this.getComponentById('local') as FileExplorerComponent).unselectAll('local');
+          (this.getComponentById('local') as FileExplorerComponent).loading = false;
+        }
+      },
+    };
+    map[response?.action]?.();
   }
 }

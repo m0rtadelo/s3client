@@ -1,6 +1,5 @@
 import { Component, get, View } from '../../core';
 import { IFiles } from '../../interfaces/model.interface';
-import { MainView } from '../../views/main/main.view';
 
 export class FileExplorerComponent extends Component {
   public selector = 'file-explorer';
@@ -15,8 +14,8 @@ export class FileExplorerComponent extends Component {
 
   private listItems() {
     const map = {
-      'local': () => this.table(this.getData().localFiles, (this.view as MainView)?.bucket?.localPath, 'local'),
-      'remote': () => this.table(this.getData().remoteFiles, (this.view as MainView)?.bucket?.remotePath, 'remote'),
+      'local': () => this.table(this.getData().localFiles, (this.view as any)?.bucket?.localPath, 'local'),
+      'remote': () => this.table(this.getData().remoteFiles, (this.view as any)?.bucket?.remotePath, 'remote'),
     };
     return map[this.getAttribute('id')]?.();
   }
@@ -34,9 +33,13 @@ export class FileExplorerComponent extends Component {
 
   private getItem(item: IFiles, type: string) {
     return `<tr><td>
-    <input class="form-check-input" type="checkbox" value="" click="this.switch('${item.Key}', '${type}')" id="${type + '/' + item.Key}"> 
+    <input class="form-check-input" type="checkbox" value=""
+    click="this.switch('${item.Key}', '${type}')" id="${type + '/' + item.Key}"> 
     ${ item.isDirectory ?
-      `<a href="#" click="${type === 'local' ? `this.openLocalFolder('${item.Key}')` : `this.openRemoteFolder('${item.Key}');`}"><i class="bi bi-folder"></i> ${item.Key}</a>` :
+      `<a href="#" click="${type === 'local' ?
+      `this.openLocalFolder('${item.Key}')` : `this.openRemoteFolder('${item.Key}');`}">
+        <i class="bi bi-folder"></i> ${item.Key}
+      </a>` :
       `<i class="bi bi-file-text"></i> ${item.Key.trim()}` }
     </td><td class="text-end">${this.getReadableFileSizeString(item.Size)}</td></tr>`;
   }
@@ -62,7 +65,9 @@ export class FileExplorerComponent extends Component {
     <div class="input-group input-group-sm mb-3">
       <span class="input-group-text" id="basic-addon1">${ type === 'local' ? 'file://' : 's3://' }</span>
       <input type="text" id="inp${type}" class="form-control" aria-describedby="basic-addon1" value="${path}">
-      <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="bi bi-arrow-repeat"></i></button>
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+        <i class="bi bi-arrow-repeat"></i>
+      </button>
     </div>
     </form>
       <!--<input type="text" class="form-control col-12" value="${path}">-->
@@ -78,7 +83,12 @@ export class FileExplorerComponent extends Component {
     <table class="table table-sm table-striped table-hover">
     <tbody style="font-size: small;">`;
     if ((this.path === '/' && path?.length > 1) || (this.path === '\\' && path?.length > 3)) {
-      result += `<tr><td><input class="form-check-input" type="checkbox" value="" disabled><a href="#" click="${type === 'local' ? `this.openLocalFolder('..')` : `this.openRemoteFolder('..')`}"> <i class="bi bi-folder"></i> ..</a></td><td>&nbsp;</td></tr>`;
+      result += `
+      <tr><td>
+        <input class="form-check-input" type="checkbox" value="" disabled>
+        <a href="#" click="${type === 'local' ? `this.openLocalFolder('..')` : `this.openRemoteFolder('..')`}"> 
+        <i class="bi bi-folder"></i> ..</a></td><td>&nbsp;
+      </td></tr>`;
     }
     [true, false].forEach((isDir) => {
       items.forEach((item) => {
@@ -89,7 +99,8 @@ export class FileExplorerComponent extends Component {
     });
     return result.concat(`</tbody>
     </table></div>
-    <div style="position: absolute; bottom: 6em; height: 2em; width: 50%; border-left: 1px solid #ccc;" class="text-center">
+    <div style="position: absolute; bottom: 6em; height: 2em; width: 50%; border-left: 1px solid #ccc;"
+    class="text-center">
     <a href="#" click="this.unselectAll('${type}')"><i class="bi bi-list-task" title="Unselect all items"></i></a>
     <small>
     <span class="badge bg-secondary"> ${this.view.model.countFiles(type)} Items </span>
@@ -101,7 +112,7 @@ export class FileExplorerComponent extends Component {
 
   private goTo(type: string) {
     const elem = get(`inp${type}`);
-    (this.view as MainView).controller[type === 'local' ? 'loadLocal' : 'loadRemote'](elem.value);
+    (this.view as any)?.controller[type === 'local' ? 'loadLocal' : 'loadRemote']?.(elem.value);
   }
 
   public selectAll(type: string) {
@@ -141,19 +152,19 @@ export class FileExplorerComponent extends Component {
 
   private openLocalFolder(folder: string) {
     if (folder === '..') {
-      (this.view as MainView).bucket.localPath = this.removeLastPath((this.view as MainView).bucket.localPath);
+      (this.view as any).bucket.localPath = this.removeLastPath((this.view as any)?.bucket?.localPath);
     } else {
-      (this.view as MainView).bucket.localPath = (this.view as MainView).bucket.localPath.concat(folder).concat(this.path);
+      (this.view as any).bucket.localPath = (this.view as any)?.bucket?.localPath?.concat(folder).concat(this.path);
     }
     this.view.emmit('reloadLocal');
   }
   private openRemoteFolder(folder: string) {
     if (folder === '..') {
-      (this.view as MainView).bucket.remotePath = this.removeLastPath((this.view as MainView).bucket.remotePath);
+      (this.view as any).bucket.remotePath = this.removeLastPath((this.view as any)?.bucket?.remotePath);
     } else {
-      const ap = (this.view as MainView).bucket.remotePath;
+      const ap = (this.view as any)?.bucket?.remotePath;
       const np = ap.concat(folder).concat('/');
-      (this.view as MainView).bucket.remotePath = np;
+      (this.view as any).bucket.remotePath = np;
     }
     this.view.emmit('reloadRemote');
   }

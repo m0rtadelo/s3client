@@ -10,7 +10,7 @@ import { Model } from '../../model';
 
 export class View {
   protected service: Service;
-  public modal = new Modals(this);
+  public modal = new Modals(this); // eslint-disable-line no-invalid-this
   public loading = false;
   public activeComponents: Array<Component> = [];
   public model = new Model();

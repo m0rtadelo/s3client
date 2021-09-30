@@ -16,7 +16,9 @@ const options = {
   'app-version': version,
   'icon': './client/dist/assets/icon.png',
   'name': 's3client',
-  'ignore': ['client/assets', 'client/node_modules', 'client/src', 'node_modules/electron-installer-debian', '.packages/', './.git', '/.nyc_output', '/coverage', '.auth.json', '.build.js', '/tests', '.myteam', '.pdf', '.docx'],
+  'ignore': ['client/assets', 'client/node_modules', 'client/src', 'node_modules/electron-installer-debian',
+    '.packages/', './.git', '/.nyc_output', '/coverage', '.auth.json',
+    '.build.js', '/tests', '.myteam', '.pdf', '.docx'],
   'out': './packages',
   'overwrite': true,
   'prune': true,
@@ -31,7 +33,9 @@ const options = {
   'afterCopy': [(buildPath, electronVersion, platform, arch, cb) => {
     if (platform === process.platform && doRebuild) {
       console.log('rebuild ' + buildPath + ' (' + arch + ')');
-      fs.copySync('./node_modules/aws-sdk/clients/codebuild.js', buildPath + '/node_modules/aws-sdk/clients/codebuild.js');
+      fs.copySync(
+          './node_modules/aws-sdk/clients/codebuild.js', buildPath + '/node_modules/aws-sdk/clients/codebuild.js',
+      );
       rebuild({ path: buildPath, buildPath, electronVersion, arch })
           .then(() => cb())
           .catch((err) => {
@@ -61,9 +65,7 @@ async function build() {
         }
       });
     }
-    // fs.copySync('./node_modules/aws-sdk/clients/codebuild.js', './' + p + '/resources/app/node_modules/aws-sdk/clients/codebuild.js');
     const name = p.split(' /').pop();
-    // await zip('./' + p, './' + name + '-v' + version + '.zip')
     await zip('./' + p, './' + name + '.zip');
     console.log(p + '.zip file created!');
   });

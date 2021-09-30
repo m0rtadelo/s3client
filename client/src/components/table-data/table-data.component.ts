@@ -76,8 +76,14 @@ export class TableDateComponent extends Component {
       });
       const bitem = window.btoa(JSON.stringify(item));
       table = table.concat(`<td style="text-align: right;">
-      <button title="${i18n.get('edit')}" click="this.edit('${bitem}');" type="button" class="btn btn-outline-light btn-sm"><i class="bi bi-pencil"></i></button>
-      <button title="${i18n.get('delete')}" click="this.delete('${bitem}');" type="button" class="btn btn-outline-light btn-sm"><i class="bi bi-trash"></i></button>
+      <button title="${i18n.get('edit')}" click="this.edit('${bitem}');" 
+      type="button" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button title="${i18n.get('delete')}" click="this.delete('${bitem}');" 
+      type="button" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-trash"></i>
+      </button>
       </td>`);
       table = table.concat('</tr>');
     });
