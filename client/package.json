@@ -7,7 +7,9 @@
     "build": "webpack --config webpack.prod.js",
     "build:watch": "webpack --config webpack.prod.js --watch",
     "lint": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --fix --ext .js,.ts"
+    "lint:fix": "eslint . --fix --ext .js,.ts",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.test.ts'",
+    "coverage": "nyc --exclude=*.test.ts --reporter=lcov --check-coverage=true --report-dir=coverage env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.test.ts'"
   },
   "keywords": [
     "client",
