@@ -1,3 +1,4 @@
+[![Node.js CI](https://github.com/m0rtadelo/s3client/actions/workflows/node.js.yml/badge.svg)](https://github.com/m0rtadelo/s3client/actions/workflows/node.js.yml)
 # s3 Client
 **A free Amazon AWS s3 graphical client**
 ## Description
@@ -30,3 +31,6 @@ Steps to publish a new release:
 * `git tag X.X.X`
 * `git push --tags`
 > X.X.X is the Release version number
+
+## Issues
+Issues should be open on the Issues section of this repo (https://github.com/m0rtadelo/s3client/issues)
